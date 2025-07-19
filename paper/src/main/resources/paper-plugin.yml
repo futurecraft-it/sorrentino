@@ -1,0 +1,8 @@
+name: sorrentino
+description: Twitch integration for Minecraft
+version: '1.0'
+api-version: '1.21.7'
+
+main: it.futurecraft.sorrentino.SorrentinoPlugin
+bootstrapper: it.futurecraft.sorrentino.SorrentinoBootstrap
+loader: it.futurecraft.sorrentino.SorrentinoLoader

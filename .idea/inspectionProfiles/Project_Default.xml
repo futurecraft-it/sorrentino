@@ -1,0 +1,15 @@
+<component name="InspectionProjectProfileManager">
+  <profile version="1.0">
+    <option name="myName" value="Project Default" />
+    <inspection_tool class="IncorrectHttpHeaderInspection" enabled="true" level="WARNING" enabled_by_default="true">
+      <option name="customHeaders">
+        <set>
+          <option value="Twitch-Eventsub-Message-Id" />
+          <option value="Twitch-Eventsub-Message-Timestamp" />
+          <option value="Twitch-Eventsub-Message-Signature" />
+          <option value="Twitch-Eventsub-Message-Type" />
+        </set>
+      </option>
+    </inspection_tool>
+  </profile>
+</component>
