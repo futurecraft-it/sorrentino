@@ -59,4 +59,9 @@ sealed interface Bits {
             val name: String,
         )
     }
+
+    @Serializable
+    data class Cheer(
+        val bits: Int
+    )
 }

@@ -130,8 +130,3 @@ data class Reply (
     @SerialName("thread_user_name")
     val threadUserName: String,
 )
-
-@Serializable
-data class Cheer(
-    val bits: Int
-)

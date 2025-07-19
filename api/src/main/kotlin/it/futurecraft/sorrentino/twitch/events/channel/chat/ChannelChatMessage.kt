@@ -1,6 +1,6 @@
 package it.futurecraft.sorrentino.twitch.events.channel.chat
 
-import it.futurecraft.sorrentino.twitch.Cheer
+import it.futurecraft.sorrentino.twitch.Bits
 import it.futurecraft.sorrentino.twitch.Message
 import it.futurecraft.sorrentino.twitch.Reply
 import it.futurecraft.sorrentino.twitch.events.TwitchEvent
@@ -74,7 +74,7 @@ data class ChannelChatMessage(
     /**
      * Optional. Metadata if this message is a cheer.
      */
-    val cheer: Cheer?,
+    val cheer: Bits.Cheer?,
 
     /**
      * The color of the user’s name in the chat room. This is a hexadecimal RGB color code in the form, `#<RGB>`. This tag may be empty if it is never set.
