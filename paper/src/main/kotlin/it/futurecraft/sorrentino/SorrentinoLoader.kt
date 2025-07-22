@@ -1,3 +1,5 @@
+@file:Suppress("UnstableApiUsage")
+
 package it.futurecraft.sorrentino
 
 import io.papermc.paper.plugin.loader.PluginClasspathBuilder

@@ -6,55 +6,49 @@ import io.ktor.server.application.*
 import io.ktor.server.engine.*
 import io.ktor.server.netty.*
 import io.ktor.server.plugins.contentnegotiation.*
-import io.ktor.server.request.receive
+import io.ktor.server.plugins.doublereceive.*
+import io.ktor.server.request.*
+import io.ktor.server.response.respondText
 import io.ktor.server.routing.*
-import it.futurecraft.sorrentino.http.middleware.challengeVerification
-import it.futurecraft.sorrentino.http.middleware.verifySignature
-import it.futurecraft.sorrentino.twitch.messages.HttpMessageType
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.launch
-import kotlinx.serialization.json.Json
-import kotlinx.serialization.json.JsonElement
-import java.util.concurrent.TimeUnit
+import io.ktor.utils.io.core.*
 
-class HttpServer(configuration: HttpServerConfiguration) {
-    private val server = embeddedServer(Netty, configuration.port, host = configuration.host) {
+import it.futurecraft.sorrentino.http.middleware.challengeVerification
+import it.futurecraft.sorrentino.http.middleware.handleNotification
+import it.futurecraft.sorrentino.http.models.HttpMessage
+import it.futurecraft.sorrentino.http.plugins.VerifySignaturePlugin
+
+import kotlinx.serialization.json.JsonElement
+
+class HttpServer : Closeable {
+    private val server = embeddedServer(Netty, port = 8080) {
+        install(DoubleReceive)
+
+        install(VerifySignaturePlugin) {
+            secret = "1okly1rfdgdqiq50hz6kjm45yj3cao" // THIS IS A FAKE SECRET YOU BLATANT
+        }
+
         install(ContentNegotiation) {
-            json(Json { prettyPrint = true; isLenient = true })
+            json()
         }
 
         routing {
-            post("/") {
+            post("/webhook/callback") {
                 val body = call.receive<JsonElement>()
-                if (!verifySignature(call, body, "1okly6kjm45yj3cao1rfdgdqiq50hz")) {
-                    call.response.status(HttpStatusCode.Forbidden)
-                    return@post
-                }
 
-                val type = call.request.headers["Twitch-Eventsub-Message-Type"]
-                when (type) {
-                    HttpMessageType.VERIFICATION.value -> challengeVerification(call, body)
-                    HttpMessageType.NOTIFICATION.value -> {}
-                    HttpMessageType.REVOCATION.value -> {}
+                return@post when (call.request.headers["Twitch-Eventsub-Message-Type"]) {
+                    HttpMessage.TYPE.VERIFICATION.type -> challengeVerification(call, body)
+                    HttpMessage.TYPE.NOTIFICATION.type -> handleNotification(call, body)
+                    HttpMessage.TYPE.REVOCATION.type -> handleNotification(call, body)
+
+                    else -> call.respondText("Invalid message type.", status = HttpStatusCode.BadRequest)
                 }
             }
         }
     }
 
-    private val scope = CoroutineScope(Dispatchers.IO)
+    fun start() =
+        server.start(wait = false)
 
-    private lateinit var job: Job
-
-    fun start() {
-        job = scope.launch {
-            server.start(wait = false)
-        }
-    }
-
-    fun stop() {
-        server.stop(0, 0, TimeUnit.MILLISECONDS)
-        job.cancel()
-    }
+    override fun close() =
+        server.stop(0, 0)
 }

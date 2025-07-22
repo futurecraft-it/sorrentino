@@ -5,7 +5,7 @@ serialization = "1.8.0"
 
 ktor = "3.0.3"
 
-junit = "4.13.2"
+exposed = "1.0.0-beta-3"
 
 shadow = "9.0.0-beta15"
 blossom = "2.1.0"
@@ -31,8 +31,11 @@ ktor-client-serialization = { module = "io.ktor:ktor-serialization-kotlinx-json"
 ktor-client-content-negotiation = { module = "io.ktor:ktor-client-content-negotiation", version.ref = "ktor", name = "ktor-client-content-negotiation" }
 ktor-server-core = { module = "io.ktor:ktor-server-core", version.ref = "ktor", name = "ktor-server-core" }
 ktor-server-netty = { module = "io.ktor:ktor-server-netty", version.ref = "ktor", name = "ktor-server-netty" }
-# ktor-server-request-validation = { module = "io.ktor:ktor-server-request-validation", version.ref = "ktor", name = "ktor-server-request-validation" }
+ktor-server-double-receive = { module = "io.ktor:ktor-server-double-receive", version.ref = "ktor", name = "ktor-server-double-receive" }
 
+# EXPOSED
+exposed-core = { module = "org.jetbrains.exposed:exposed-core", version.ref = "exposed", name = "exposed-core" }
+exposed-jdbc = { module = "org.jetbrains.exposed:exposed-jdbc", version.ref = "exposed", name = "exposed-jdbc" }
 
 # SERIALIZATION
 serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "serialization" }
@@ -53,8 +56,9 @@ kotlin-serialization = { module = "org.jetbrains.kotlin.plugin.serialization:org
 
 [bundles]
 kotlin = ["kotlin-stdlib", "kotlin-reflect", "kotlin-datetime", "kotlin-atomicfu", "kotlin-coroutine"]
-ktor = ["ktor-client-core", "ktor-client-cio", "ktor-client-serialization", "ktor-client-content-negotiation", "ktor-server-core", "ktor-server-netty"]
+ktor = ["ktor-client-core", "ktor-client-cio", "ktor-client-serialization", "ktor-client-content-negotiation", "ktor-server-core", "ktor-server-netty", "ktor-server-double-receive"]
 serialization = ["serialization-json", "serialization-hocon"]
+exposed = ["exposed-core", "exposed-jdbc"]
 
 [plugins]
 blossom = { id = "net.kyori.blossom", version.ref = "blossom" }

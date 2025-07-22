@@ -1,15 +1,17 @@
 package it.futurecraft.sorrentino
 
-import it.futurecraft.sorrentino.twitch.events.TwitchEvent
+import it.futurecraft.sorrentino.twitch.Subscription
 import org.bukkit.event.Event
 import org.bukkit.event.HandlerList
 
-class NotificationEvent(val twitchEvent: TwitchEvent) : Event() {
+abstract class NotificationEvent(
+    val type: Subscription.Type
+) : Event() {
     companion object {
-        private val HANDLER_LIST = HandlerList()
+        private val HANDLERS_LIST = HandlerList()
 
-        fun getHandlersList(): HandlerList = HANDLER_LIST
+        fun getHandlerList() = HANDLERS_LIST
     }
 
-    override fun getHandlers(): HandlerList = HANDLER_LIST
+    override fun getHandlers(): HandlerList = HANDLERS_LIST
 }

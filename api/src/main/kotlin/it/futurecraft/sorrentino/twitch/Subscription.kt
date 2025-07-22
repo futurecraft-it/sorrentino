@@ -6,28 +6,98 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.JsonElement
 
+/**
+ * The object representing a subscription to Twitch's EventSub.
+ * See [Twitch Documentation](https://dev.twitch.tv/docs/eventsub/eventsub-reference/#subscription).
+ */
 @Serializable
 data class Subscription(
+    /**
+     * The ID of the client that subscribed to the event.
+     */
     val id: String,
-    val status: Status,
-    val type: Type,
-    val version: String,
-    val condition: JsonElement,
-    val transport: Transport,
 
+    /**
+     * The notification's subscription type.
+     */
+    val type: Type,
+
+    /**
+     * The version of the subscription.
+     */
+    val version: String,
+
+    /**
+     * The status of the subscription.
+     */
+    val status: Status,
+
+    /**
+     * How much the subscription counts against your limit.
+     */
+    val cost: Int,
+
+    /**
+     * The time the notification was created.
+     */
     @SerialName("created_at")
-    @Serializable(with = LocalDateTimeRFC3339Serializer::class)
+    @Serializable(LocalDateTimeRFC3339Serializer::class)
     val createdAt: LocalDateTime,
 
-    val cost: Int
-) {
-    @Serializable
-    data class Transport(
-        val method: String,
-        val callback: String
-    )
+    /**
+     * Subscription-specific parameters.
+     */
+    val condition: JsonElement,
 
-    @Serializable
+    /**
+     * The transport method used to deliver the notification.
+     */
+    val transport: Transport,
+) {
+    /**
+     * The status of the subscription.
+     */
+    enum class Status {
+        /**
+         * The subscription is enabled and active.
+         */
+        @SerialName("enabled")
+        ENABLED,
+
+        /**
+         * The subscription callback has the verification pending.
+         */
+        @SerialName("webhook_callback_verification_pending")
+        WEBHOOK_CALLBACK_VERIFICATION_PENDING,
+
+        /**
+         * The subscription is disabled.
+         */
+        @SerialName("user_removed")
+        USER_REMOVED,
+
+        /**
+         * The authorization to the subscription has been revoked.
+         */
+        @SerialName("authorization_revoked")
+        AUTHORIZATION_REVOKED,
+
+        /**
+         * The notification to the subscription has failed too many times.
+         */
+        @SerialName("notification_failure_exceeded")
+        NOTIFICATION_FAILURE_EXCEEDED,
+
+        /**
+         * The version of the subscription has been removed.
+         */
+        @SerialName("version_removed")
+        VERSION_REMOVED
+    }
+
+    /**
+     * The notification's subscription type.
+     */
     enum class Type {
         @SerialName("automod.message.hold")
         AUTOMOD_MESSAGE_HOLD,
@@ -264,24 +334,24 @@ data class Subscription(
         USER_WHISPER_MESSAGE
     }
 
+    /**
+     * The transport method used to deliver the notification.
+     */
     @Serializable
-    enum class Status {
-        @SerialName("enabled")
-        ENABLED,
+    data class Transport(
+        /**
+         * The method used to deliver the notification.
+         */
+        val method: String,
 
-        @SerialName("webhook_callback_verification_pending")
-        WEBHOOK_CALLBACK_VERIFICATION_PENDING,
+        /**
+         * The callback URL to which the notification is sent.
+         */
+        val callback: String,
 
-        @SerialName("user_removed")
-        USER_REMOVED,
-
-        @SerialName("authorization_revoked")
-        AUTHORIZATION_REVOKED,
-
-        @SerialName("notification_failure_exceeded")
-        NOTIFICATION_FAILURE_EXCEEDED,
-
-        @SerialName("version_removed")
-        VERSION_REMOVED
-    }
+        /**
+         * The secret used to sign the notification.
+         */
+        val secret: String? = null
+    )
 }
