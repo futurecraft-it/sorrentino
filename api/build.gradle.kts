@@ -3,4 +3,6 @@ plugins {
     id("sorrentino.publish-conventions")
 }
 
-
+dependencies {
+    api(libs.twitch4j)
+}

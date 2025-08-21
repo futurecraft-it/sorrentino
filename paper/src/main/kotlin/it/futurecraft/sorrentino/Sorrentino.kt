@@ -1,5 +1,5 @@
 package it.futurecraft.sorrentino
 
-class SorrentinoImpl(private val plugin: SorrentinoPlugin) : Sorrentino {
+class SorrentinoImpl : Sorrentino {
     override val version: Version = Version.V1_0
 }

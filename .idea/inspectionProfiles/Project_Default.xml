@@ -8,6 +8,7 @@
           <option value="Twitch-Eventsub-Message-Timestamp" />
           <option value="Twitch-Eventsub-Message-Signature" />
           <option value="Twitch-Eventsub-Message-Type" />
+          <option value="Client-Id" />
         </set>
       </option>
     </inspection_tool>

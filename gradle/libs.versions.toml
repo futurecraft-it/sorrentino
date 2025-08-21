@@ -1,19 +1,21 @@
 [versions]
-kotlin = "2.2.0"
+kotlin = "2.2.10"
 dokka = "2.0.0"
 serialization = "1.8.0"
+ktor = "3.2.3"
+exposed = "1.0.0-beta-5"
 
-ktor = "3.0.3"
-
-exposed = "1.0.0-beta-3"
+koin = "4.1.0"
 
 shadow = "9.0.0-beta15"
-blossom = "2.1.0"
 
 adventure = "4.17.0"
-commandapi = "9.5.2"
-paper = "1.21.7-R0.1-SNAPSHOT"
+paper = "1.21.8-R0.1-SNAPSHOT"
 bstats  = "3.0.2"
+
+mock = "2.3.1"
+
+twitch4j = "1.25.0"
 
 [libraries]
 # KOTLIN
@@ -25,27 +27,41 @@ kotlin-coroutine = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", v
 
 
 # KTOR
+ktor-serialization = { module = "io.ktor:ktor-serialization-kotlinx-json", version.ref = "ktor", name = "ktor-client-serialization" }
+
 ktor-client-core = { module = "io.ktor:ktor-client-core", version.ref = "ktor", name = "ktor-client-core" }
 ktor-client-cio = { module = "io.ktor:ktor-client-cio", version.ref = "ktor", name = "ktor-client-cio" }
-ktor-client-serialization = { module = "io.ktor:ktor-serialization-kotlinx-json", version.ref = "ktor", name = "ktor-client-serialization" }
 ktor-client-content-negotiation = { module = "io.ktor:ktor-client-content-negotiation", version.ref = "ktor", name = "ktor-client-content-negotiation" }
+
 ktor-server-core = { module = "io.ktor:ktor-server-core", version.ref = "ktor", name = "ktor-server-core" }
 ktor-server-netty = { module = "io.ktor:ktor-server-netty", version.ref = "ktor", name = "ktor-server-netty" }
 ktor-server-double-receive = { module = "io.ktor:ktor-server-double-receive", version.ref = "ktor", name = "ktor-server-double-receive" }
 
+
 # EXPOSED
 exposed-core = { module = "org.jetbrains.exposed:exposed-core", version.ref = "exposed", name = "exposed-core" }
 exposed-jdbc = { module = "org.jetbrains.exposed:exposed-jdbc", version.ref = "exposed", name = "exposed-jdbc" }
+exposed-dao = { module = "org.jetbrains.exposed:exposed-dao", version.ref = "exposed", name = "exposed-dao" }
+
 
 # SERIALIZATION
 serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "serialization" }
 serialization-hocon = { module = "org.jetbrains.kotlinx:kotlinx-serialization-hocon", version.ref = "serialization" }
 
+
+# KOIN
+koin-core = { module = "io.insert-koin:koin-core", version.ref = "koin", name = "koin-core" }
+
+
 # MINECRAFT
 adventure = { module = "net.kyori:adventure-api", version.ref = "adventure" }
-commandapi = { module = "dev.jorel:commandapi-bukkit-core", version.ref = "commandapi" }
 paper = { module = "io.papermc.paper:paper-api", version.ref = "paper" }
 bstats = { module = "org.bstats:bstats-bukkit", version.ref = "bstats" }
+
+
+# TWITCH4J :)
+twitch4j = { module = "com.github.twitch4j:twitch4j", version.ref = "twitch4j", name = "twitch4j" }
+
 
 # PLUGINS
 shadow = { module = "com.gradleup.shadow:shadow-gradle-plugin", version.ref = "shadow" }
@@ -53,16 +69,12 @@ kotlin-dokka = { module = "org.jetbrains.dokka:dokka-gradle-plugin", version.ref
 kotlin-gradle = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
 kotlin-jvm = { module = "org.jetbrains.kotlin.jvm:org.jetbrains.kotlin.jvm.gradle.plugin", version.ref = "kotlin" }
 kotlin-serialization = { module = "org.jetbrains.kotlin.plugin.serialization:org.jetbrains.kotlin.plugin.serialization.gradle.plugin", version.ref = "serialization" }
+paper-mock = { module = "xyz.jpenilla.run-paper:xyz.jpenilla.run-paper.gradle.plugin", version.ref = "mock" }
+
 
 [bundles]
 kotlin = ["kotlin-stdlib", "kotlin-reflect", "kotlin-datetime", "kotlin-atomicfu", "kotlin-coroutine"]
-ktor = ["ktor-client-core", "ktor-client-cio", "ktor-client-serialization", "ktor-client-content-negotiation", "ktor-server-core", "ktor-server-netty", "ktor-server-double-receive"]
+ktor-server = ["ktor-server-core", "ktor-server-netty", "ktor-server-double-receive"]
+ktor-client = ["ktor-client-core", "ktor-client-cio", "ktor-serialization", "ktor-client-content-negotiation"]
 serialization = ["serialization-json", "serialization-hocon"]
-exposed = ["exposed-core", "exposed-jdbc"]
-
-[plugins]
-blossom = { id = "net.kyori.blossom", version.ref = "blossom" }
-kotlin = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
-shadow = { id = "com.gradleup.shadow", version.ref = "shadow" }
-dokka = { id = "org.jetbrains.dokka", version = "dokka" }
-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
+exposed = ["exposed-core", "exposed-jdbc", "exposed-dao"]

@@ -3,6 +3,7 @@ package it.futurecraft.sorrentino.http.plugins
 import io.ktor.http.HttpStatusCode
 import io.ktor.server.application.createApplicationPlugin
 import io.ktor.server.request.receive
+import io.ktor.server.request.receiveText
 import io.ktor.server.response.respondText
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonElement
@@ -39,8 +40,8 @@ val VerifySignaturePlugin = createApplicationPlugin(
                 return@onCall
             }
 
-            val body = call.receive<JsonElement>()
-            val message = "$messageId$timestamp" + Json.encodeToString(body)
+            val body = call.receiveText()
+            val message = "$messageId$timestamp$body"
 
             val generated = "sha256=${hmac(message, secret)}"
 

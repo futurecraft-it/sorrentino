@@ -22,11 +22,14 @@ val libs = extensions.getByType(VersionCatalogsExtension::class.java)
 
 dependencies {
     implementation(libs.findBundle("kotlin").get())
+    implementation(libs.findBundle("exposed").get())
+    implementation(libs.findBundle("ktor.client").get())
     implementation(libs.findBundle("serialization").get())
+
+    implementation(libs.findLibrary("koin.core").get())
 
     compileOnly(libs.findLibrary("paper").get())
     compileOnly(libs.findLibrary("adventure").get())
-    compileOnly(libs.findLibrary("commandapi").get())
 }
 
 java {

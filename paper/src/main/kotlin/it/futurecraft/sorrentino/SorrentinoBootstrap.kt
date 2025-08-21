@@ -11,7 +11,5 @@ class SorrentinoBootstrap : PluginBootstrap {
     override fun bootstrap(ctx: BootstrapContext) {
     }
 
-    override fun createPlugin(ctx: PluginProviderContext): JavaPlugin {
-        return SorrentinoPlugin()
-    }
+    override fun createPlugin(ctx: PluginProviderContext): JavaPlugin = SorrentinoPlugin()
 }

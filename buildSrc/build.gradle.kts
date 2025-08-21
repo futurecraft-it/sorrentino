@@ -17,4 +17,6 @@ dependencies {
     implementation(libs.kotlin.jvm)
     implementation(libs.kotlin.dokka)
     implementation(libs.kotlin.serialization)
+
+    implementation(libs.paper.mock)
 }
