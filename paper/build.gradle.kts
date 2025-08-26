@@ -10,4 +10,6 @@ dependencies {
     implementation(libs.bundles.ktor.server)
 
     implementation(libs.bstats)
+
+    implementation(libs.hikari)
 }

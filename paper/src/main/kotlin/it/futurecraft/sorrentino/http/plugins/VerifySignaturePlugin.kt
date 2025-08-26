@@ -1,12 +1,9 @@
 package it.futurecraft.sorrentino.http.plugins
 
-import io.ktor.http.HttpStatusCode
-import io.ktor.server.application.createApplicationPlugin
-import io.ktor.server.request.receive
-import io.ktor.server.request.receiveText
-import io.ktor.server.response.respondText
-import kotlinx.serialization.json.Json
-import kotlinx.serialization.json.JsonElement
+import io.ktor.http.*
+import io.ktor.server.application.*
+import io.ktor.server.request.*
+import io.ktor.server.response.*
 import javax.crypto.Mac
 import javax.crypto.spec.SecretKeySpec
 import kotlin.experimental.and
@@ -21,7 +18,10 @@ internal fun hmac(message: String, secret: String): String {
     return result.joinToString("") { "%02x".format(it and 0xff.toByte()) }
 }
 
-data class VerifySignaturePluginConfig(var secret: String = "")
+data class VerifySignaturePluginConfig(
+    var secret: String = "",
+    var ignore: List<String> = emptyList(),
+)
 
 val VerifySignaturePlugin = createApplicationPlugin(
     name = "VerifyRequestPlugin",
@@ -31,6 +31,12 @@ val VerifySignaturePlugin = createApplicationPlugin(
 
     pluginConfig.apply {
         onCall { call ->
+            val uri = call.request.uri
+
+            if (ignore.any { uri.startsWith(it) }) {
+                return@onCall
+            }
+
             val signature = call.request.headers["Twitch-Eventsub-Message-Signature"]
             val messageId = call.request.headers["Twitch-Eventsub-Message-Id"]
             val timestamp = call.request.headers["Twitch-Eventsub-Message-Timestamp"]

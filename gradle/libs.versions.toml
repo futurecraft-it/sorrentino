@@ -16,6 +16,9 @@ bstats  = "3.0.2"
 mock = "2.3.1"
 
 twitch4j = "1.25.0"
+events4j = "0.12.2"
+
+hikari = "7.0.2"
 
 [libraries]
 # KOTLIN
@@ -30,18 +33,24 @@ kotlin-coroutine = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", v
 ktor-serialization = { module = "io.ktor:ktor-serialization-kotlinx-json", version.ref = "ktor", name = "ktor-client-serialization" }
 
 ktor-client-core = { module = "io.ktor:ktor-client-core", version.ref = "ktor", name = "ktor-client-core" }
-ktor-client-cio = { module = "io.ktor:ktor-client-cio", version.ref = "ktor", name = "ktor-client-cio" }
+ktor-client-okhttp = { module = "io.ktor:ktor-client-okhttp", version.ref = "ktor", name = "ktor-client-okhttp" }
 ktor-client-content-negotiation = { module = "io.ktor:ktor-client-content-negotiation", version.ref = "ktor", name = "ktor-client-content-negotiation" }
 
 ktor-server-core = { module = "io.ktor:ktor-server-core", version.ref = "ktor", name = "ktor-server-core" }
 ktor-server-netty = { module = "io.ktor:ktor-server-netty", version.ref = "ktor", name = "ktor-server-netty" }
 ktor-server-double-receive = { module = "io.ktor:ktor-server-double-receive", version.ref = "ktor", name = "ktor-server-double-receive" }
+ktor-server-content-negotiation = { module = "io.ktor:ktor-server-content-negotiation", version.ref = "ktor", name = "ktor-server-content-negotiation" }
 
 
 # EXPOSED
 exposed-core = { module = "org.jetbrains.exposed:exposed-core", version.ref = "exposed", name = "exposed-core" }
 exposed-jdbc = { module = "org.jetbrains.exposed:exposed-jdbc", version.ref = "exposed", name = "exposed-jdbc" }
 exposed-dao = { module = "org.jetbrains.exposed:exposed-dao", version.ref = "exposed", name = "exposed-dao" }
+exposed-datetime = { module = "org.jetbrains.exposed:exposed-kotlin-datetime", version.ref = "exposed", name = "exposed-datetime" }
+
+
+# HIKARI CP
+hikari = { module = "com.zaxxer:HikariCP", version.ref = "hikari", name = "hikari" }
 
 
 # SERIALIZATION
@@ -61,6 +70,7 @@ bstats = { module = "org.bstats:bstats-bukkit", version.ref = "bstats" }
 
 # TWITCH4J :)
 twitch4j = { module = "com.github.twitch4j:twitch4j", version.ref = "twitch4j", name = "twitch4j" }
+events4j = { module = "com.github.philippheuer.events4j:events4j-handler-simple", version.ref = "events4j", name = "events4j" }
 
 
 # PLUGINS
@@ -73,8 +83,8 @@ paper-mock = { module = "xyz.jpenilla.run-paper:xyz.jpenilla.run-paper.gradle.pl
 
 
 [bundles]
-kotlin = ["kotlin-stdlib", "kotlin-reflect", "kotlin-datetime", "kotlin-atomicfu", "kotlin-coroutine"]
-ktor-server = ["ktor-server-core", "ktor-server-netty", "ktor-server-double-receive"]
-ktor-client = ["ktor-client-core", "ktor-client-cio", "ktor-serialization", "ktor-client-content-negotiation"]
+exposed = ["exposed-core", "exposed-jdbc", "exposed-dao", "exposed-datetime"]
 serialization = ["serialization-json", "serialization-hocon"]
-exposed = ["exposed-core", "exposed-jdbc", "exposed-dao"]
+ktor-server = ["ktor-server-core", "ktor-server-netty", "ktor-server-double-receive", "ktor-serialization", "ktor-server-content-negotiation"]
+kotlin = ["kotlin-stdlib", "kotlin-reflect", "kotlin-datetime", "kotlin-atomicfu", "kotlin-coroutine"]
+ktor-client = ["ktor-client-core", "ktor-client-okhttp", "ktor-serialization", "ktor-client-content-negotiation"]

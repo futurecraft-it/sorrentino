@@ -7,7 +7,7 @@ import org.eclipse.aether.artifact.DefaultArtifact;
 import org.eclipse.aether.graph.Dependency;
 import org.eclipse.aether.repository.RemoteRepository;
 
-@SuppressWarnings("UnstableApiUsage")
+@SuppressWarnings({"UnstableApiUsage", "Unused"})
 public class SorrentinoLoader implements PluginLoader {
     @Override
     public void classloader(PluginClasspathBuilder builder) {
@@ -21,8 +21,8 @@ public class SorrentinoLoader implements PluginLoader {
                 ).build()
         );
 
-        resolver.addDependency(new Dependency(new DefaultArtifact("org.jetbrains.kotlin:kotlin-stdlib:2.2.10"), null));;
-        resolver.addDependency(new Dependency(new DefaultArtifact("org.jetbrains.kotlin:kotlin-stdlib-jdk8:2.2.10"), null));;
+        resolver.addDependency(new Dependency(new DefaultArtifact("org.jetbrains.kotlin:kotlin-stdlib:2.2.10"), null));
+        resolver.addDependency(new Dependency(new DefaultArtifact("org.jetbrains.kotlin:kotlin-stdlib-jdk8:2.2.10"), null));
         resolver.addDependency(new Dependency(new DefaultArtifact("org.jetbrains.kotlin:kotlin-reflect:2.2.10"), null));
         resolver.addDependency(new Dependency(new DefaultArtifact("org.jetbrains.kotlinx:atomicfu:0.29.0"), null));
 
@@ -45,6 +45,9 @@ public class SorrentinoLoader implements PluginLoader {
         resolver.addDependency(new Dependency(new DefaultArtifact("org.jetbrains.exposed:exposed-jdbc:1.0.0-beta-5"), null));
 
         resolver.addDependency(new Dependency(new DefaultArtifact("io.insert-koin:koin-core:4.1.0"), null));
+
+//        resolver.addDependency(new Dependency(new DefaultArtifact("om.github.twitch4j:twitch4j:1.25.0"), null));
+//        resolver.addDependency(new Dependency(new DefaultArtifact("com.github.philippheuer.events4j:events4j-handler-simple:0.12.2"), null));
 
         builder.addLibrary(resolver);
     }
