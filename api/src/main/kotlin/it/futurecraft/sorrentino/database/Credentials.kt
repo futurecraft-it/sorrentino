@@ -22,4 +22,6 @@ interface Credentials<E : User> {
     var refresh: String
 
     var expiresAt: LocalDateTime
+
+    val expiresIn: Int
 }

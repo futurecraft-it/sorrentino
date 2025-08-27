@@ -1,7 +1,9 @@
 package it.futurecraft.sorrentino
 
+import com.github.philippheuer.credentialmanager.domain.OAuth2Credential
 import com.github.philippheuer.events4j.core.EventManager
 import com.github.philippheuer.events4j.simple.SimpleEventHandler
+import com.github.twitch4j.TwitchClientBuilder
 import com.github.twitch4j.common.util.EventManagerUtils
 import it.futurecraft.sorrentino.http.HttpServer
 import kotlinx.coroutines.*
@@ -18,8 +20,7 @@ class SorrentinoPlugin : JavaPlugin(), KoinComponent, Listener {
         single<SorrentinoPlugin> { this@SorrentinoPlugin }
     }
 
-    private val _job = SupervisorJob()
-    private val _scope = CoroutineScope(Dispatchers.IO + _job)
+    private val _scope = CoroutineScope(Dispatchers.IO + SupervisorJob())
 
     private val _http: HttpServer = HttpServer()
 
