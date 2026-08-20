@@ -1,0 +1,85 @@
+[versions]
+project = "26.1-alpha1"
+
+#######################
+####   LIBRARIES   ####
+#######################
+
+# DATABASE
+hikari = "7.0.2"
+
+# MINECRAFT
+bstats  = "3.0.2"
+adventure = "4.17.0"
+
+# JAVALIN
+javalin = "7.2.2"
+
+# GUICE
+guice = "7.0.0"
+
+# TWITCH
+events4j = "0.12.3"
+twitch4j = "1.26.0"
+
+okhttp = "5.5.0"
+
+moshi = "1.15.2"
+
+#######################
+####    PLUGINS    ####
+#######################
+
+dokka = "2.0.0"
+shadow = "9.0.0-beta15"
+run-paper = "3.0.2"
+maven-publish = "0.34.0"
+
+
+[libraries]
+
+# HIKARI CP
+hikari = { module = "com.zaxxer:HikariCP", version.ref = "hikari", name = "hikari" }
+
+
+# DRIVERS DB
+mysql = { module = "com.mysql:mysql-connector-j", version = "9.4.0", name = "mysql" }
+postgresql = { module = "org.postgresql:postgresql", version = "42.7.8", name = "postgresql" }
+sqlite = { module = "org.xerial:sqlite-jdbc", version = "3.50.3.0", name = "sqlite" }
+mariadb = { module = "org.mariadb.jdbc:mariadb-java-client", version = "3.5.6", name = "mariadb" }
+
+
+# MINECRAFT
+bstats-bukkit = { module = "org.bstats:bstats-bukkit", version.ref = "bstats", name = "bstats" }
+adventure = { module = "net.kyori:adventure-api", version.ref = "adventure", name = "adventure" }
+
+
+# JAVALIN
+javalin = { module = "io.javalin:javalin", version.ref = "javalin", name = "javalin" }
+
+
+# GUICE
+guice = { module = "com.google.inject:guice", version.ref = "guice", name = "guice" }
+
+
+# TWITCH
+twitch4j = { module = "com.github.twitch4j:twitch4j", version.ref = "twitch4j", name = "twitch4j" }
+events4j = { module = "com.github.philippheuer.events4j:events4j-handler-simple", version.ref = "events4j", name = "events4j" }
+
+
+# OKHTTP
+okhttp = { module = "com.squareup.okhttp3:okhttp", version.ref = "okhttp", name = "okhttp" }
+
+
+# MOSHI
+moshi = { module = "com.squareup.moshi:moshi", version.ref = "moshi", name = "moshi" }
+moshi-adapters = { module = "com.squareup.moshi:moshi-adapters", version.ref = "moshi", name = "moshi-adapters" }
+
+#######################
+####    PLUGINS    ####
+#######################
+
+dokka = { module = "org.jetbrains.dokka:dokka-gradle-plugin", version.ref = "dokka" }
+shadow = { module = "com.gradleup.shadow:shadow-gradle-plugin", version.ref = "shadow" }
+publish = { module = "com.vanniktech:gradle-maven-publish-plugin", version.ref = "maven-publish" }
+run-paper = { module = "xyz.jpenilla.run-paper:xyz.jpenilla.run-paper.gradle.plugin", version.ref = "run-paper" }
