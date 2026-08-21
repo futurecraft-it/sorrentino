@@ -12,8 +12,9 @@ dependencies {
 
     implementation(libs.hikari)
 
+    implementation(libs.jimmer)
     implementation(libs.jimmer.sql)
-    annotationProcessor(libs.jimmer.annotation)
+    annotationProcessor(libs.jimmer.apt)
 
     runtimeOnly(libs.mysql)
     runtimeOnly(libs.sqlite)

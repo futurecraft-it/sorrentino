@@ -80,8 +80,8 @@ moshi-adapters = { module = "com.squareup.moshi:moshi-adapters", version.ref = "
 
 # JIMMER
 jimmer = { module = "org.babyfish.jimmer:jimmer-core", version.ref = "jimmer", name = "jimmer" }
-jimmer-sql = { module = "org.babyfish.jimmer:jimmer-sql", version.ref = "jimmer", name = "jimmer" }
-jimmer-annotation = { module = "org.babyfish.jimmer:jimmer-apt", version.ref = "jimmer", name = "jimmer-annotation" }
+jimmer-sql = { module = "org.babyfish.jimmer:jimmer-sql", version.ref = "jimmer", name = "jimmer-sql" }
+jimmer-apt = { module = "org.babyfish.jimmer:jimmer-apt", version.ref = "jimmer", name = "jimmer-apt" }
 
 #######################
 ####    PLUGINS    ####
