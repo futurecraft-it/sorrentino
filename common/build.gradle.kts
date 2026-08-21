@@ -12,6 +12,7 @@ dependencies {
 
     implementation(libs.hikari)
 
+    implementation(libs.jimmer.sql)
     annotationProcessor(libs.jimmer.annotation)
 
     runtimeOnly(libs.mysql)

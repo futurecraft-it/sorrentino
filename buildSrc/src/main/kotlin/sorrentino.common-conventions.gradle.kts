@@ -20,9 +20,6 @@ dependencies {
     compileOnly(libs.findLibrary("adventure").get())
     implementation(libs.findLibrary("guice").get())
 
-    implementation(libs.findLibrary("jimmer").get())
-    implementation(libs.findLibrary("jimmersql").get())
-
     // Test
     testImplementation(platform("org.junit:junit-bom:6.0.0"))
     testImplementation("org.junit.jupiter:junit-jupiter")
