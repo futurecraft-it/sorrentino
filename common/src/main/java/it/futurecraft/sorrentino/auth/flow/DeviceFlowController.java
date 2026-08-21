@@ -1,10 +1,6 @@
 package it.futurecraft.sorrentino.auth.flow;
 
-import com.github.twitch4j.TwitchClient;
-import com.github.twitch4j.TwitchClientBuilder;
 import com.github.twitch4j.auth.domain.TwitchScopes;
-import com.github.twitch4j.helix.domain.User;
-import com.github.twitch4j.helix.domain.UserList;
 import com.google.inject.Inject;
 import com.squareup.moshi.Json;
 import com.squareup.moshi.JsonAdapter;
@@ -12,7 +8,6 @@ import com.squareup.moshi.Moshi;
 import it.futurecraft.sorrentino.Sorrentino;
 import it.futurecraft.sorrentino.auth.ClientIdentity;
 import it.futurecraft.sorrentino.auth.Device;
-import it.futurecraft.sorrentino.database.enities.UserEntity;
 import it.futurecraft.sorrentino.services.AuthenticationService;
 import it.futurecraft.sorrentino.utils.wrappers.PlayerWrapper;
 import it.futurecraft.sorrentino.utils.wrappers.SchedulerWrapper;
@@ -20,13 +15,9 @@ import okhttp3.*;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
-import java.time.Clock;
 import java.time.Instant;
-import java.time.LocalDateTime;
 import java.util.List;
-import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutionException;
 import java.util.stream.Collectors;
 
 public class DeviceFlowController implements FlowController {
@@ -133,24 +124,7 @@ public class DeviceFlowController implements FlowController {
                         JsonAdapter<Credentials> adapter = moshi.adapter(Credentials.class);
                         Credentials credentials = adapter.fromJson(body.source());
 
-                        api.userRepository().findById(target.uuid()).thenAccept(optionalUser -> {
-                            try {
-                                UserEntity user = optionalUser.orElse(registerUser(target, credentials).get());
-                                api.credentialsRepository().create(1, credentialsEntity -> {
-                                    LocalDateTime expiration = LocalDateTime.ofInstant(
-                                            Instant.now().plusSeconds(credentials.expiresIn),
-                                            Clock.systemUTC().getZone()
-                                    );
-                                    
-                                    credentialsEntity.accessToken(credentials.access);
-                                    credentialsEntity.refreshToken(credentials.refresh);
-                                    credentialsEntity.expiresAt(expiration);
-                                    credentialsEntity.user(user);
-                                });
-                            } catch (InterruptedException | ExecutionException e) {
-                                throw new RuntimeException(e);
-                            }
-                        });
+                        // TODO: Add credentials store
 
                         future.complete(true);
                     }
@@ -161,31 +135,6 @@ public class DeviceFlowController implements FlowController {
         });
 
         return future;
-    }
-
-    private CompletableFuture<UserEntity> registerUser(PlayerWrapper target, Credentials credentials) {
-        UUID id = target.uuid();
-        String name = target.displayName();
-
-        TwitchClientBuilder builder = TwitchClientBuilder.builder()
-                .withClientId(identity.id())
-                .withClientSecret(identity.secret())
-                .withEnableHelix(true);
-
-        try (TwitchClient twitchClient = builder.build()) {
-            UserList users = twitchClient.getHelix().getUsers(credentials.access, null, null)
-                    .execute();
-
-            User user = users.getUsers().getFirst();
-
-            return api.userRepository().create(id, u -> {
-                u.twitchUsername(user.getLogin());
-                u.twitchId(Integer.parseInt(user.getId()));
-                u.displayName(name);
-            });
-        } catch (Exception e) {
-            return CompletableFuture.failedFuture(e);
-        }
     }
 
     private static class Credentials {
