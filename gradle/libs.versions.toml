@@ -1,0 +1,105 @@
+# Version catalog is a central place for you to declare and version dependencies
+# https://docs.gradle.org/current/userguide/platforms.html#sub:version-catalog
+# https://docs.gradle.org/current/userguide/platforms.html#sub::toml-dependencies-format
+
+[versions]
+kotlin = "2.4.20"
+kotlin-dokka = "2.2.0"
+kotlinx-datetime = "0.8.0"
+kotlinx-serialization = "1.11.0"
+kotlinx-coroutines = "1.10.2"
+
+ktor = "3.6.0"
+exposed = "1.5.0"
+
+shadow = "9.6.1"
+maven-publish = "0.37.0"
+
+hikari = "7.1.0"
+
+twitch4j = "1.27.0"
+events4j = "0.12.3"
+
+paper = "26.2.build.+"
+velocity = "4.2.1-SNAPSHOT"
+
+project = "26.1-snapshot.1"
+
+[libraries]
+
+
+# PLUGINS
+kotlin-gradle = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
+kotlin-jvm = { module = "org.jetbrains.kotlin.jvm:org.jetbrains.kotlin.jvm.gradle.plugin", version.ref = "kotlin" }
+kotlinx-serialization = { module = "org.jetbrains.kotlin.plugin.serialization:org.jetbrains.kotlin.plugin.serialization.gradle.plugin", version.ref = "kotlin" }
+kotlin-dokka = { module = "org.jetbrains.dokka:dokka-gradle-plugin", version.ref = "kotlin-dokka" }
+shadow = { module = "com.gradleup.shadow:shadow-gradle-plugin", version.ref = "shadow"}
+mavenpublish = { module = "com.vanniktech:gradle-maven-publish-plugin", version.ref = "maven-publish" }
+
+
+# KOTLIN
+kotlin-stdlib = { module = "org.jetbrains.kotlin:kotlin-stdlib", name = "kotlin-stdlib", version.ref = "kotlin" }
+kotlin-reflect = { module = "org.jetbrains.kotlin:kotlin-reflect", version.ref = "kotlin", name = "kotlin-reflect" }
+
+
+# KOTLINX
+kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "kotlinx-datetime" }
+kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinx-serialization" }
+kotlinx-serialization-hocon = { module = "org.jetbrains.kotlinx:kotlinx-serialization-hocon", version.ref = "kotlinx-serialization" }
+kotlinx-coroutines = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinx-coroutines" }
+kotlin-atomicfu = { module = "org.jetbrains.kotlinx:atomicfu", version = "0.29.0", name = "kotlin-atomicfu" }
+
+
+# KTOR
+ktor-serialization = { module = "io.ktor:ktor-serialization-kotlinx-json", version.ref = "ktor", name = "ktor-client-serialization" }
+ktor-client-core = { module = "io.ktor:ktor-client-core", version.ref = "ktor", name = "ktor-client-core" }
+ktor-client-okhttp = { module = "io.ktor:ktor-client-okhttp", version.ref = "ktor", name = "ktor-client-okhttp" }
+ktor-client-content-negotiation = { module = "io.ktor:ktor-client-content-negotiation", version.ref = "ktor", name = "ktor-client-content-negotiation" }
+ktor-server-core = { module = "io.ktor:ktor-server-core", version.ref = "ktor", name = "ktor-server-core" }
+ktor-server-netty = { module = "io.ktor:ktor-server-netty", version.ref = "ktor", name = "ktor-server-netty" }
+ktor-server-double-receive = { module = "io.ktor:ktor-server-double-receive", version.ref = "ktor", name = "ktor-server-double-receive" }
+ktor-server-content-negotiation = { module = "io.ktor:ktor-server-content-negotiation", version.ref = "ktor", name = "ktor-server-content-negotiation" }
+
+
+# EXPOSED
+exposed-core = { module = "org.jetbrains.exposed:exposed-core", version.ref = "exposed", name = "exposed-core" }
+exposed-jdbc = { module = "org.jetbrains.exposed:exposed-jdbc", version.ref = "exposed", name = "exposed-jdbc" }
+exposed-dao = { module = "org.jetbrains.exposed:exposed-dao", version.ref = "exposed", name = "exposed-dao" }
+exposed-datetime = { module = "org.jetbrains.exposed:exposed-kotlin-datetime", version.ref = "exposed", name = "exposed-datetime" }
+
+
+# DATABASE
+database-hikari = { module = "com.zaxxer:HikariCP", version.ref = "hikari", name = "hikari" }
+database-mysql = { module = "com.mysql:mysql-connector-j", version = "9.4.0", name = "mysql" }
+database-postgresql = { module = "org.postgresql:postgresql", version = "42.7.8", name = "postgresql" }
+database-sqlite = { module = "org.xerial:sqlite-jdbc", version = "3.50.3.0", name = "sqlite" }
+database-mariadb = { module = "org.mariadb.jdbc:mariadb-java-client", version = "3.5.6", name = "mariadb" }
+database-h2 = { module = "com.h2database:h2", version = "2.4.240", name = "h2" }
+
+
+# TWITCH4J :)
+twitch4j = { module = "com.github.twitch4j:twitch4j", version.ref = "twitch4j", name = "twitch4j" }
+events4j = { module = "com.github.philippheuer.events4j:events4j-handler-simple", version.ref = "events4j", name = "events4j" }
+
+
+# MINECRAFT
+paper-api = { module = "io.papermc.paper:paper-api", version.ref = "paper", name = "paper-api" }
+velocity-api = { module = "com.velocitypowered:velocity-api", version.ref = "velocity", name = "velocity-api" }
+
+# Libraries can be bundled together for easier import
+[bundles]
+kotlin = ["kotlin-stdlib", "kotlin-reflect"]
+kotlinx = ["kotlinx-datetime", "kotlinx-coroutines", "kotlin-atomicfu"]
+kotlinx-serialization = ["kotlinx-serialization-json", "kotlinx-serialization-hocon"]
+ktor-client = ["ktor-client-core", "ktor-client-okhttp", "ktor-serialization", "ktor-client-content-negotiation"]
+ktor-server = ["ktor-server-core", "ktor-server-netty", "ktor-server-double-receive", "ktor-serialization", "ktor-server-content-negotiation"]
+database-drivers = ["database-mysql", "database-postgresql", "database-sqlite", "database-mariadb", "database-h2"]
+exposed = ["exposed-core", "exposed-jdbc", "exposed-dao", "exposed-datetime"]
+twitch4j = ["twitch4j", "events4j"]
+
+
+[plugins]
+serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
+dokka = { id = "org.jetbrains.dokka", version.ref = "kotlin-dokka" }
+shadow = { id = "com.gradleup.shadow", version.ref = "shadow" }
+maven-publish = { id = "maven-publish", version.ref = "maven-publish" }
