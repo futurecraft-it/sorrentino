@@ -13,10 +13,12 @@ dependencies {
     // Add a dependency on the Kotlin Gradle plugin, so that convention plugins can apply it.
     implementation(libs.shadow)
     implementation(libs.mavenpublish)
+    implementation(libs.gremlin.gradle)
 
     implementation(libs.kotlin.jvm)
     implementation(libs.kotlin.dokka)
     implementation(libs.kotlin.gradle)
-
     implementation(libs.kotlinx.serialization)
+
+    implementation(files(libs.javaClass.superclass.protectionDomain.codeSource.location))
 }

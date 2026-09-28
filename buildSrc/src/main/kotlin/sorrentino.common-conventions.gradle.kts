@@ -1,3 +1,4 @@
+import gradle.kotlin.dsl.accessors._8cede302156b6ff0aaf0c2baecf4f41d.implementation
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
@@ -7,17 +8,21 @@ plugins {
     kotlin("plugin.serialization")
 }
 
-val libs = extensions.getByType(VersionCatalogsExtension::class.java)
-    .named("libs")
 
 group = "it.futurecraft.sorrentino"
-version = libs.findVersion("project").get()
+version = libs.versions.project.get()
+
+print(version)
 
 repositories {
     mavenCentral()
     maven("https://jitpack.io")
     maven("https://api.modrinth.com/maven")
     maven("https://repo.papermc.io/repository/maven-public/")
+}
+
+dependencies {
+    implementation(libs.gremlin.runtime)
 }
 
 java {

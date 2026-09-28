@@ -1,9 +1,38 @@
 import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
-import kotlin.jvm.optionals.getOrNull
 
 plugins {
     id("java-library")
     id("com.gradleup.shadow")
+    id("xyz.jpenilla.gremlin-gradle")
+}
+
+dependencies {
+    implementation(project(":common"))
+
+    runtimeDownload(libs.bundles.ktor.client){
+        isTransitive = false
+    }
+    runtimeDownload(libs.bundles.ktor.server){
+        isTransitive = false
+    }
+    runtimeDownload(libs.bundles.exposed)
+    runtimeDownload(libs.bundles.database.drivers) {
+        isTransitive = false
+    }
+    runtimeDownload(libs.bundles.twitch4j)
+}
+
+configurations.runtimeDownload {
+    exclude("org.slf4j", "slf4j-api")
+}
+
+tasks.writeDependencies {
+    outputFileName = "sorrentino-dependencies.txt"
+
+    repos.add("https://jitpack.io")
+    repos.add("https://api.modrinth.com/maven")
+    repos.add("https://repo.maven.apache.org/maven2/")
+    repos.add("https://repo.papermc.io/repository/maven-public/")
 }
 
 tasks.assemble {
@@ -27,10 +56,6 @@ tasks.shadowJar {
     excludes()
 }
 
-tasks.processResources {
-    dependsOn(tasks.getByName("saveCatalogue"))
-}
-
 fun ShadowJar.relocations() {
 }
 
@@ -46,33 +71,4 @@ fun ShadowJar.excludes() {
     exclude("**/*.kotlin_metadata")
     exclude("**/*.kotlin_module")
     exclude("**/*.kotlin_builtins")
-}
-
-tasks.register("saveCatalogue") {
-    description = "Saves the dependency catalogue to a json file."
-
-
-    val libs = extensions.getByType<VersionCatalogsExtension>().named("libs")
-    val resourceFile = layout.buildDirectory.file("resources/main/libraries.json")
-
-    outputs.file(resourceFile)
-
-    doLast {
-        val file = resourceFile.get().asFile
-        file.parentFile.mkdirs()
-
-        val entries = libs.libraryAliases.mapNotNull { alias ->
-            val library = libs.findLibrary(alias).getOrNull()?.get() ?: return@mapNotNull null
-
-            """
-                "$alias": {
-                    "groupId": "${library.group}",
-                    "artifactId": "${library.name}",
-                    "version": "${library.versionConstraint.requiredVersion}"
-                }
-            """.trimIndent()
-        }.joinToString(",\n")
-
-        file.writeText("{\n$entries\n}")
-    }
 }

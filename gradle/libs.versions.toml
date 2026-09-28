@@ -2,6 +2,9 @@
 # https://docs.gradle.org/current/userguide/platforms.html#sub:version-catalog
 # https://docs.gradle.org/current/userguide/platforms.html#sub::toml-dependencies-format
 
+
+# type: ignore
+
 [versions]
 kotlin = "2.4.20"
 kotlin-dokka = "2.2.0"
@@ -18,12 +21,13 @@ maven-publish = "0.37.0"
 hikari = "7.1.0"
 
 twitch4j = "1.27.0"
-events4j = "0.12.3"
 
 paper = "26.2.build.+"
 velocity = "4.2.1-SNAPSHOT"
 
-project = "26.1-snapshot.1"
+gremlin = "0.0.9"
+
+project = "26.1-snapshot1"
 
 [libraries]
 
@@ -35,6 +39,7 @@ kotlinx-serialization = { module = "org.jetbrains.kotlin.plugin.serialization:or
 kotlin-dokka = { module = "org.jetbrains.dokka:dokka-gradle-plugin", version.ref = "kotlin-dokka" }
 shadow = { module = "com.gradleup.shadow:shadow-gradle-plugin", version.ref = "shadow"}
 mavenpublish = { module = "com.vanniktech:gradle-maven-publish-plugin", version.ref = "maven-publish" }
+gremlin-gradle = { module = "xyz.jpenilla:gremlin-gradle", version.ref = "gremlin" }
 
 
 # KOTLIN
@@ -78,8 +83,13 @@ database-h2 = { module = "com.h2database:h2", version = "2.4.240", name = "h2" }
 
 
 # TWITCH4J :)
-twitch4j = { module = "com.github.twitch4j:twitch4j", version.ref = "twitch4j", name = "twitch4j" }
-events4j = { module = "com.github.philippheuer.events4j:events4j-handler-simple", version.ref = "events4j", name = "events4j" }
+twitch4j-helix = { module = "com.github.twitch4j:twitch4j-helix", version.ref = "twitch4j", name = "twitch4j-helix" }
+twitch4j-kotlin = { module = "com.github.twitch4j:twitch4j-kotlin", version.ref = "twitch4j", name = "twitch4j-kotlin" }
+twitch4j-eventsub-common = { module = "com.github.twitch4j:twitch4j-eventsub-common", version.ref = "twitch4j", name = "twitch4j-eventsub-common" }
+
+
+#GREMLIN
+gremlin-runtime = { module = "xyz.jpenilla:gremlin-runtime", version.ref = "gremlin" }
 
 
 # MINECRAFT
@@ -95,7 +105,7 @@ ktor-client = ["ktor-client-core", "ktor-client-okhttp", "ktor-serialization", "
 ktor-server = ["ktor-server-core", "ktor-server-netty", "ktor-server-double-receive", "ktor-serialization", "ktor-server-content-negotiation"]
 database-drivers = ["database-mysql", "database-postgresql", "database-sqlite", "database-mariadb", "database-h2"]
 exposed = ["exposed-core", "exposed-jdbc", "exposed-dao", "exposed-datetime"]
-twitch4j = ["twitch4j", "events4j"]
+twitch4j = ["twitch4j-helix", "twitch4j-kotlin", "twitch4j-eventsub-common"]
 
 
 [plugins]
