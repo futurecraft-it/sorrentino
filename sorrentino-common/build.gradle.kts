@@ -3,7 +3,7 @@ plugins {
 }
 
 dependencies {
-    api(project(":api"))
+    api(project(":sorrentino-api"))
 
     implementation(libs.kotlin.reflect)
     implementation(libs.kotlin.atomicfu)

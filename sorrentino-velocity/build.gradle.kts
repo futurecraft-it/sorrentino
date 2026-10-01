@@ -1,11 +1,11 @@
 plugins {
     id("sorrentino.common-conventions")
     id("sorrentino.build-conventions")
+
+    id("org.jetbrains.kotlin.kapt")
 }
 
 dependencies {
-    implementation(project(":common"))
-
     implementation(libs.velocity.api)
-    annotationProcessor(libs.velocity.api)
+    kapt(libs.velocity.api)
 }

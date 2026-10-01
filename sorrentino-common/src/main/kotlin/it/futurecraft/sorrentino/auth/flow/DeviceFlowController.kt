@@ -81,6 +81,7 @@ class DeviceFlowController(private val _identity: Identity, private val _schedul
             val uuid = target.getOrDefault(AudienceIdentity.UUID, null) ?: return _scheduler.sync {
 
             }
+
             val user = transaction { User.findById(uuid) } ?: register(uuid, target, data)
 
             val expiry = Clock.System.now()
@@ -104,7 +105,7 @@ class DeviceFlowController(private val _identity: Identity, private val _schedul
     }
 
     private fun register(uuid: UUID, target: Audience, data: Data): User {
-        val name = target.getOrDefault(AudienceIdentity.NAME, "")
+        val name = target.getOrDefault(AudienceIdentity.NAME, "")!!
 
         val client = TwitchHelixBuilder.builder()
             .withClientId(_identity.id)

@@ -7,7 +7,7 @@ plugins {
 }
 
 dependencies {
-    implementation(project(":common"))
+    implementation(project(":sorrentino-common"))
 
     runtimeDownload(libs.bundles.ktor.client){
         isTransitive = false
