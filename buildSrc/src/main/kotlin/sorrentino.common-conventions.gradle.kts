@@ -22,6 +22,7 @@ repositories {
 }
 
 dependencies {
+    compileOnly(libs.adventure)
     implementation(libs.gremlin.runtime)
 }
 

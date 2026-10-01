@@ -13,7 +13,7 @@ object Dependencies {
             DependencySet.readFromClasspathResource(javaClass.classLoader, "sorrentino-dependencies.txt")
         val cache = DependencyCache(out)
 
-        val logger = LoggerFactory.getLogger(javaClass)
+        val logger = LoggerFactory.getLogger("SorretinoDependencies")
 
         try {
             return DependencyResolver(Slf4jGremlinLogger(logger)).use { downloader ->

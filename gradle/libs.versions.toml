@@ -24,6 +24,7 @@ twitch4j = "1.27.0"
 
 paper = "26.2.build.+"
 velocity = "4.2.1-SNAPSHOT"
+adventure = "5.2.0"
 
 gremlin = "0.0.9"
 
@@ -86,6 +87,7 @@ database-h2 = { module = "com.h2database:h2", version = "2.4.240", name = "h2" }
 # TWITCH4J :)
 twitch4j-helix = { module = "com.github.twitch4j:twitch4j-helix", version.ref = "twitch4j", name = "twitch4j-helix" }
 twitch4j-kotlin = { module = "com.github.twitch4j:twitch4j-kotlin", version.ref = "twitch4j", name = "twitch4j-kotlin" }
+twitch4j-common = { module = "com.github.twitch4j:twitch4j-common", version.ref = "twitch4j", name = "twitch4j-common" }
 twitch4j-eventsub-common = { module = "com.github.twitch4j:twitch4j-eventsub-common", version.ref = "twitch4j", name = "twitch4j-eventsub-common" }
 
 
@@ -96,6 +98,7 @@ gremlin-runtime = { module = "xyz.jpenilla:gremlin-runtime", version.ref = "grem
 # MINECRAFT
 paper-api = { module = "io.papermc.paper:paper-api", version.ref = "paper", name = "paper-api" }
 velocity-api = { module = "com.velocitypowered:velocity-api", version.ref = "velocity", name = "velocity-api" }
+adventure = { module = "net.kyori:adventure-api", version.ref = "adventure", name = "adventure-api" }
 
 # Libraries can be bundled together for easier import
 [bundles]
@@ -106,7 +109,7 @@ ktor-client = ["ktor-client-core", "ktor-client-okhttp", "ktor-serialization", "
 ktor-server = ["ktor-server-core", "ktor-server-netty", "ktor-server-double-receive", "ktor-serialization", "ktor-server-content-negotiation"]
 database-drivers = ["database-mysql", "database-postgresql", "database-sqlite", "database-mariadb", "database-h2"]
 exposed = ["exposed-core", "exposed-jdbc", "exposed-dao", "exposed-datetime"]
-twitch4j = ["twitch4j-helix", "twitch4j-kotlin", "twitch4j-eventsub-common"]
+twitch4j = ["twitch4j-common", "twitch4j-helix", "twitch4j-kotlin", "twitch4j-eventsub-common"]
 
 
 [plugins]

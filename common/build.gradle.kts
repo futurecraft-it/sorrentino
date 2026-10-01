@@ -8,6 +8,7 @@ dependencies {
     implementation(libs.kotlin.reflect)
     implementation(libs.kotlin.atomicfu)
     api(libs.bundles.kotlinx.serialization)
+    implementation("io.ktor:ktor-client-okhttp-jvm:3.6.0")
 
     compileOnly(libs.bundles.ktor.client)
     compileOnly(libs.bundles.ktor.server)
@@ -16,6 +17,4 @@ dependencies {
 
     implementation(libs.database.hikari)
     compileOnly(libs.bundles.database.drivers)
-
-    compileOnlyApi(libs.bundles.twitch4j)
 }
