@@ -14,11 +14,14 @@ import it.futurecraft.sorrentino.auth.Device
 import it.futurecraft.sorrentino.auth.Identity
 import it.futurecraft.sorrentino.database.credential.CredentialTable
 import it.futurecraft.sorrentino.database.user.User
+import it.futurecraft.sorrentino.event.EventBus
+import it.futurecraft.sorrentino.event.auth.AuthenticationCancelledEvent
+import it.futurecraft.sorrentino.event.auth.AuthenticationStartEvent
+import it.futurecraft.sorrentino.event.auth.AuthenticationSuccessEvent
 import it.futurecraft.sorrentino.service.AuthenticationService
 import it.futurecraft.sorrentino.utils.wrapper.SchedulerWrapper
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
@@ -35,7 +38,11 @@ import kotlin.time.Instant
 
 private typealias AudienceIdentity = net.kyori.adventure.identity.Identity
 
-class DeviceFlowController(private val _identity: Identity, private val _scheduler: SchedulerWrapper) : FlowController {
+class DeviceFlowController(
+    private val _identity: Identity,
+    private val _scheduler: SchedulerWrapper,
+    private val _eventbus: EventBus
+) : FlowController {
     private val _client = HttpClient(OkHttp) {
         install(ContentNegotiation) {
             json(Json { isLenient = true; ignoreUnknownKeys = true })
@@ -53,19 +60,24 @@ class DeviceFlowController(private val _identity: Identity, private val _schedul
 
     override suspend fun start(target: Audience, scopes: List<TwitchScopes>) = withContext(Dispatchers.IO) {
         val device = init(scopes)
+        val event = AuthenticationStartEvent(device.verificationUri, device.code, target)
 
         _scheduler.sync {
             val expiration = Clock.System.now() + 120.seconds
 
-            val job = launch(Dispatchers.IO) {
-                poll(target, scopes, device, expiration)
+            if (_eventbus.publish(event)) {
+                _scheduler.async { poll(target, scopes, device, expiration) }
+            } else {
+                val cancel = AuthenticationCancelledEvent(target, AuthenticationCancelledEvent.Reason.CANCELLED)
+                _eventbus.publish(cancel)
             }
         }
     }
 
     private suspend fun poll(target: Audience, scopes: List<TwitchScopes>, device: Device, expiration: Instant) {
         if (Clock.System.now() >= expiration) {
-            return _scheduler.sync {}
+            val event = AuthenticationCancelledEvent(target, AuthenticationCancelledEvent.Reason.TIMED_OUT)
+            return _scheduler.sync { _eventbus.publish(event) }
         }
 
         val res = _client.submitForm("${AuthenticationService.ENDPOINT}/token", formParameters = parameters {
@@ -79,7 +91,8 @@ class DeviceFlowController(private val _identity: Identity, private val _schedul
             val data = res.body<Data>()
 
             val uuid = target.getOrDefault(AudienceIdentity.UUID, null) ?: return _scheduler.sync {
-
+                val event = AuthenticationCancelledEvent(target, AuthenticationCancelledEvent.Reason.INVALID_USER)
+                _eventbus.publish(event)
             }
 
             val user = transaction { User.findById(uuid) } ?: register(uuid, target, data)
@@ -97,7 +110,8 @@ class DeviceFlowController(private val _identity: Identity, private val _schedul
                 }
             }
 
-            return _scheduler.sync {}
+            val event = AuthenticationSuccessEvent(target, user.twitchName)
+            return _scheduler.sync { _eventbus.publish(event) }
         }
 
         delay(device.interval.seconds)
